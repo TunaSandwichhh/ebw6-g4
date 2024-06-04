@@ -47,9 +47,16 @@ public class CustomerService {
 
   public DeleteCustomerResponseBody removeCustomer(UUID customerId) {
     Customer customerToDelete = customerRepository.findById(customerId).orElseThrow(()-> new RuntimeException("Customer not found with id: " + customerId));
+
+    Customer customerToShow = new Customer();
+
+    setCustomerFieldsForDeletion(customerToShow, customerToDelete);
+
     customerRepository.delete(customerToDelete);
 
-    return new DeleteCustomerResponseBody("Customer deleted successfully", customerToDelete);
+    System.out.println(customerToShow);
+
+    return new DeleteCustomerResponseBody("Customer deleted successfully", customerToShow);
   }
 
   /**
@@ -121,6 +128,27 @@ public class CustomerService {
     if(customerRequestBody.getLastContactDate() != null) {
       customerToCreate.setLastContactDate(customerRequestBody.getLastContactDate());
     }
+  }
+
+  public void setCustomerFieldsForDeletion(Customer customerToCreate, Customer customerRequestBody) {
+    customerToCreate.setCustomerType(customerRequestBody.getCustomerType());
+    customerToCreate.setBusinessName(customerRequestBody.getBusinessName());
+    customerToCreate.setCertifiedEmail(customerRequestBody.getCertifiedEmail());
+    customerToCreate.setCompanyLogo(customerRequestBody.getCompanyLogo());
+    customerToCreate.setContactEmail(customerRequestBody.getContactEmail());
+    customerToCreate.setContactFirstName(customerRequestBody.getContactFirstName());
+    customerToCreate.setContactLastName(customerRequestBody.getContactLastName());
+    customerToCreate.setContactTelephone(customerRequestBody.getContactTelephone());
+    customerToCreate.setEmail(customerRequestBody.getEmail());
+    customerToCreate.setYearlyRevenue(customerRequestBody.getYearlyRevenue());
+    customerToCreate.setVatNumber(customerRequestBody.getVatNumber());
+    customerToCreate.setTelephone(customerRequestBody.getTelephone());
+    customerToCreate.setCreationDate(LocalDate.now());
+    customerToCreate.setLastContactDate(customerRequestBody.getLastContactDate());
+    customerToCreate.setId(customerRequestBody.getId());
+    customerToCreate.setLastContactDate(customerRequestBody.getLastContactDate());
+    customerToCreate.setAddresses(customerRequestBody.getAddresses());
+    customerToCreate.setInvoices(customerRequestBody.getInvoices());
   }
 
 }
