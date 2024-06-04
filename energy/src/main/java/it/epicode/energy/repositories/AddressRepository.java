@@ -1,4 +1,9 @@
 package it.epicode.energy.repositories;
 
-public interface AddressRepository {
+import it.epicode.energy.entities.Address;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface AddressRepository extends JpaRepository<UUID, Address> {
 }
