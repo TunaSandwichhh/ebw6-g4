@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class CreateCustomerRequestBody {
@@ -50,8 +51,5 @@ public class CreateCustomerRequestBody {
 
   @NotBlank(message = "customer type cannot be empty")
   private String customerType;
-
-  @Size(min = 1, max = 2, message = "list must have min 1 item, max 2")
-  private List<Address> addresses;
 
 }
