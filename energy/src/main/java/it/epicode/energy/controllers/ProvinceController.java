@@ -1,5 +1,6 @@
 package it.epicode.energy.controllers;
 
+import com.opencsv.exceptions.CsvValidationException;
 import it.epicode.energy.entities.Province;
 import it.epicode.energy.services.ProvinceService;
 import it.epicode.energy.types.requests.create.CreateProvinceRequestBody;
@@ -13,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/provinces")
@@ -60,5 +64,15 @@ public class ProvinceController {
   @DeleteMapping("/{id}")
   public ResponseEntity<DeleteProvinceResponseBody> deleteProvince(@PathVariable String id) {
     return new ResponseEntity<>(provinceService.removeProvince(id), HttpStatus.OK);
+  }
+
+  @PostMapping("/import")
+  public ResponseEntity<String> importProvinces(@RequestParam("file") MultipartFile file) {
+    try {
+      provinceService.importProvincesFromCSV(file);
+      return ResponseEntity.status(HttpStatus.OK).body("File imported successfully");
+    } catch (IOException | CsvValidationException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error importing file: " + e.getMessage());
+    }
   }
 }

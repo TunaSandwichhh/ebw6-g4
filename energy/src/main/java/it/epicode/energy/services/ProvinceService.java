@@ -1,4 +1,6 @@
 package it.epicode.energy.services;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import it.epicode.energy.entities.Province;
 import it.epicode.energy.repositories.ProvinceRepository;
 import it.epicode.energy.types.requests.create.CreateProvinceRequestBody;
@@ -10,6 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProvinceService {
@@ -46,6 +54,22 @@ public class ProvinceService {
         setProvinceFieldsForDeletion(provinceToShow, provinceToDelete);
         provinceRepository.delete(provinceToDelete);
         return new DeleteProvinceResponseBody("Province deleted successfully", provinceToShow);
+    }
+
+    public void importProvincesFromCSV(MultipartFile file) throws IOException, CsvValidationException {
+        List<Province> provinces = new ArrayList<>();
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
+            String[] values;
+            csvReader.readNext();
+            while ((values = csvReader.readNext()) != null) {
+                Province province = new Province();
+                province.setInitials(values[0]);
+                province.setProvinceName(values[1]);
+                province.setRegion(values[2]);
+                provinces.add(province);
+            }
+        }
+        provinceRepository.saveAll(provinces);
     }
 
     /**
