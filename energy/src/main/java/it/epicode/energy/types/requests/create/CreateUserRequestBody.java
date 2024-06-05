@@ -1,4 +1,4 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.create;
 
 import it.epicode.energy.entities.enums.UserRole;
 import jakarta.validation.constraints.Email;
@@ -30,6 +30,6 @@ public class CreateUserRequestBody {
   @NotBlank(message = "avatar url cannot be empty")
   private String avatarUrl;
 
-  @Size(min = 1, message = "user must have at least a role assigned")
+  @Size(min = 1, max = 2, message = "user must have at least a role assigned")
   private List<UserRole> userRoles;
 }

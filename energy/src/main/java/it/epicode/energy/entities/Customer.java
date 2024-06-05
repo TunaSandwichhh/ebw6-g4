@@ -1,10 +1,12 @@
 package it.epicode.energy.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.energy.entities.enums.CustomerType;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,11 +60,11 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   private CustomerType customerType;
 
-  @OneToMany(mappedBy = "customer")
-  private List<Address> addresses;
+  @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+  private List<Address> addresses = new ArrayList<>();
 
-  @OneToMany(mappedBy = "customer")
-  private List<Invoice> invoices;
+  @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+  private List<Invoice> invoices = new ArrayList<>();
 
   @Override
   public String toString() {

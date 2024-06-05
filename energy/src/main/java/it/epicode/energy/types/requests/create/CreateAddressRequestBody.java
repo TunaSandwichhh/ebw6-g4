@@ -1,4 +1,4 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.create;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

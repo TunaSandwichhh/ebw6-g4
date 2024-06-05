@@ -1,11 +1,9 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.create;
 
-import it.epicode.energy.entities.Address;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class CreateCustomerRequestBody {
@@ -50,8 +48,5 @@ public class CreateCustomerRequestBody {
 
   @NotBlank(message = "customer type cannot be empty")
   private String customerType;
-
-  @Size(min = 1, max = 2, message = "list must have min 1 item, max 2")
-  private List<Address> addresses;
 
 }

@@ -1,15 +1,13 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.update;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
-public class CreateInvoiceRequestBody {
+public class UpdateInvoiceRequestBody {
 
   @NotNull(message = "date cannot be empty")
   private LocalDate date;
@@ -20,6 +18,4 @@ public class CreateInvoiceRequestBody {
   @NotBlank(message = "invoice state cannot be empty")
   private String invoiceState;
 
-  @NotNull(message = "customer id cannot be empty")
-  private UUID customerId;
 }
