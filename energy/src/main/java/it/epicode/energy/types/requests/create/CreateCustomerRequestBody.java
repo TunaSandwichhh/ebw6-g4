@@ -1,12 +1,9 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.create;
 
-import it.epicode.energy.entities.Address;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 public class CreateCustomerRequestBody {

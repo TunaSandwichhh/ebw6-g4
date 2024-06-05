@@ -2,8 +2,8 @@ package it.epicode.energy.controllers;
 
 import it.epicode.energy.entities.Customer;
 import it.epicode.energy.services.CustomerService;
-import it.epicode.energy.types.requests.CreateCustomerRequestBody;
-import it.epicode.energy.types.requests.UpdateCustomerRequestBody;
+import it.epicode.energy.types.requests.create.CreateCustomerRequestBody;
+import it.epicode.energy.types.requests.update.UpdateCustomerRequestBody;
 import it.epicode.energy.types.responses.DeleteCustomerResponseBody;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;

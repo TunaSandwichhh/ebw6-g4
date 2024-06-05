@@ -1,4 +1,4 @@
-package it.epicode.energy.types.requests;
+package it.epicode.energy.types.requests.update;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;
