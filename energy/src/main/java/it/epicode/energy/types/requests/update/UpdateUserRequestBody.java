@@ -4,9 +4,11 @@ import it.epicode.energy.entities.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class UpdateUserRequestBody {
 
   private String username;
