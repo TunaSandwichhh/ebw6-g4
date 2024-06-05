@@ -1,5 +1,7 @@
 package it.epicode.energy.services;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import it.epicode.energy.entities.County;
 
 import it.epicode.energy.entities.Province;
@@ -18,6 +20,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -63,6 +71,27 @@ public class CountyService {
         setCountyFieldsForDeletion(countyToShow, countyToDelete);
         countyRepository.delete(countyToDelete);
         return new DeleteCountyResponseBody("County deleted successfully", countyToShow);
+    }
+
+    public void importCountiesFromCSV(MultipartFile file) throws IOException, CsvValidationException {
+        List<County> counties = new ArrayList<>();
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
+            String[] values;
+            csvReader.readNext();
+            while ((values = csvReader.readNext()) != null) {
+                County county = new County();
+                county.setProvinceCode(Integer.parseInt(values[0]));
+                county.setCountyNumber(Integer.parseInt(values[1]));
+                county.setCountyName(values[2]);
+
+                Province province = provinceRepository.findById(values[3])
+                        .orElseThrow(() -> new RuntimeException("Province not found"));
+                county.setProvince(province);
+
+                counties.add(county);
+            }
+        }
+        countyRepository.saveAll(counties);
     }
 
 
