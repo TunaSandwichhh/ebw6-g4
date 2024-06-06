@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class CustomerController {
   private CustomerService customerService;
 
   @GetMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Page<Customer>> getCustomers(@RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size,
                                                      @RequestParam(defaultValue = "id") String sortBy) {
@@ -31,11 +33,13 @@ public class CustomerController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Customer> getCustomer(@PathVariable UUID id) {
     return new ResponseEntity<>(customerService.retrieveCustomerById(id), HttpStatus.OK);
   }
 
   @PostMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Customer> createCustomer(@RequestBody @Validated CreateCustomerRequestBody customerRequestBody, BindingResult validation) throws BadRequestException {
     if(validation.hasErrors()){
       throw new BadRequestException(validation.getAllErrors()
@@ -47,6 +51,7 @@ public class CustomerController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Customer> updateCustomer(@RequestBody @Validated UpdateCustomerRequestBody customerRequestBody,
                                                  @PathVariable UUID id,
                                                  BindingResult validation) throws BadRequestException {
@@ -60,6 +65,7 @@ public class CustomerController {
   }
   
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<DeleteCustomerResponseBody> deleteCustomer(@PathVariable UUID id) {
     return new ResponseEntity<>(customerService.removeCustomer(id), HttpStatus.OK);
   }
