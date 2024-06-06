@@ -62,10 +62,13 @@ public class ProvinceService {
             String[] values;
             csvReader.readNext();
             while ((values = csvReader.readNext()) != null) {
+
+                String[] actualValues = values[0].split(";");
+
                 Province province = new Province();
-                province.setInitials(values[0]);
-                province.setProvinceName(values[1]);
-                province.setRegion(values[2]);
+                province.setInitials(actualValues[0]);
+                province.setProvinceName(actualValues[1]);
+                province.setRegion(actualValues[2]);
                 provinces.add(province);
             }
         }

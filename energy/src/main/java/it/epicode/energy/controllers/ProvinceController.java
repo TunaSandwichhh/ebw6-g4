@@ -67,7 +67,7 @@ public class ProvinceController {
   }
 
   @PostMapping("/import")
-  public ResponseEntity<String> importProvinces(@RequestParam("file") MultipartFile file) throws CsvValidationException, IOException {
+  public ResponseEntity<String> importProvinces(@RequestParam MultipartFile file) throws CsvValidationException, IOException {
       provinceService.importProvincesFromCSV(file);
       return new ResponseEntity<>("File imported successfully", HttpStatus.OK);
   }

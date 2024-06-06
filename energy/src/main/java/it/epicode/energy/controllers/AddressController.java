@@ -46,7 +46,7 @@ public class AddressController {
         return new ResponseEntity<>(addressService.addAddress(addressRequestBody), HttpStatus.CREATED);
     }
 
-    @PatchMapping("{/id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Address> updateAddress(@RequestBody @Validated UpdateAddressRequestBody addressRequestBody,
                                                  @PathVariable UUID id,
                                                  BindingResult validation) throws BadRequestException {

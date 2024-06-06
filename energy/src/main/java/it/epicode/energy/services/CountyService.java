@@ -5,20 +5,17 @@ import com.opencsv.exceptions.CsvValidationException;
 import it.epicode.energy.entities.County;
 
 import it.epicode.energy.entities.Province;
-import it.epicode.energy.entities.enums.CustomerType;
 import it.epicode.energy.repositories.CountyRepository;
 import it.epicode.energy.repositories.ProvinceRepository;
 import it.epicode.energy.types.requests.create.CreateCountyRequestBody;
 
 import it.epicode.energy.types.requests.update.UpdateCountyRequestBody;
 import it.epicode.energy.types.responses.DeleteCountyResponseBody;
-import it.epicode.energy.types.responses.DeleteCustomerResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -79,12 +76,15 @@ public class CountyService {
             String[] values;
             csvReader.readNext();
             while ((values = csvReader.readNext()) != null) {
-                County county = new County();
-                county.setProvinceCode(Integer.parseInt(values[0]));
-                county.setCountyNumber(Integer.parseInt(values[1]));
-                county.setCountyName(values[2]);
 
-                Province province = provinceRepository.findById(values[3])
+                String[] actualValues = values[0].split(";");
+
+                County county = new County();
+                county.setProvinceCode(Integer.parseInt(actualValues[0]));
+                county.setCountyNumber(Integer.parseInt(actualValues[1]));
+                county.setCountyName(actualValues[2]);
+
+                Province province = provinceRepository.findById(actualValues[3])
                         .orElseThrow(() -> new RuntimeException("Province not found"));
                 county.setProvince(province);
 
