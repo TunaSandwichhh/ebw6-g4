@@ -59,13 +59,9 @@ public class CountyController {
     }
 
     @PostMapping("/import")
-    public ResponseEntity<String> importCounties(@RequestParam("file") MultipartFile file) {
-        try {
+    public ResponseEntity<String> importCounties(@RequestParam("file") MultipartFile file) throws CsvValidationException, IOException {
             countyService.importCountiesFromCSV(file);
-            return ResponseEntity.status(HttpStatus.OK).body("File imported successfully");
-        } catch (IOException | CsvValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error importing file: " + e.getMessage());
-        }
+            return new ResponseEntity<>("File imported successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
