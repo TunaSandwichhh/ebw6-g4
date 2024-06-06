@@ -19,13 +19,14 @@ import java.util.List;
 @org.springframework.context.annotation.Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class Configuration {
+public class ConfigurationClass {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource(){
     CorsConfiguration corsConfiguration = new CorsConfiguration();
     corsConfiguration.setAllowedOrigins(List.of("*"));
     corsConfiguration.setAllowedMethods(List.of("*"));
+    corsConfiguration.setAllowedHeaders(List.of("*"));
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
@@ -45,10 +46,16 @@ public class Configuration {
     httpSecurity.sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     httpSecurity.cors(Customizer.withDefaults());
 
-    httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/api/").permitAll());
+    httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/api/**").permitAll());
     httpSecurity.authorizeHttpRequests(http -> http.requestMatchers( HttpMethod.POST,"/auth/**").permitAll());
-    httpSecurity.authorizeHttpRequests(http->http.anyRequest().authenticated());
+//    httpSecurity.authorizeHttpRequests(http->http.anyRequest().authenticated());
+
+    httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/api/auth/**")
+            .permitAll()
+            .anyRequest().authenticated()
+    );
 
     return httpSecurity.build();
   }
+
 }

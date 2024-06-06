@@ -1,9 +1,6 @@
 package it.epicode.energy.types.requests.update;
 
-import it.epicode.energy.entities.enums.UserRole;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -24,7 +21,6 @@ public class UpdateUserRequestBody {
 
   private String avatarUrl;
 
-  @Size(max = 2, message = "user can haver max 2 roles assigned")
-  private List<UserRole> userRoles;
+  private String userRole;
 
 }

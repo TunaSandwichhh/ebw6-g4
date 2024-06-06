@@ -30,8 +30,8 @@ public class JwtTool {
                 .build().parse(token);
     }
 
-    public String getIdFromUser(String token){
-        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).
-                build().parseSignedClaims(token).getPayload().getSubject();
+    public int getIdFromUser(String token){
+        return Integer.parseInt(Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).
+                build().parseSignedClaims(token).getPayload().getSubject());
     }
 }

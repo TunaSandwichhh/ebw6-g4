@@ -35,14 +35,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<User> getUser(@PathVariable UUID userId) {
+    public ResponseEntity<User> getUser(@PathVariable int userId) {
         return new ResponseEntity<>(userService.retrieveUserById(userId), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<User> updateUser(@RequestBody @Validated UpdateUserRequestBody userRequestBody,
-                                           @PathVariable UUID userId,
+                                           @PathVariable int userId,
                                            BindingResult validation) throws BadRequestException {
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors()
@@ -55,7 +55,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<DeleteUserResponseBody> deleteUser(@PathVariable UUID userId) {
+    public ResponseEntity<DeleteUserResponseBody> deleteUser(@PathVariable int userId) {
         return new ResponseEntity<>(userService.removeUser(userId), HttpStatus.OK);
     }
 }

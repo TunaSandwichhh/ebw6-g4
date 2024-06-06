@@ -1,6 +1,7 @@
 package it.epicode.energy.services;
 
 import it.epicode.energy.entities.User;
+import it.epicode.energy.entities.enums.UserRole;
 import it.epicode.energy.repositories.UserRepository;
 import it.epicode.energy.types.requests.create.CreateUserRequestBody;
 import it.epicode.energy.types.requests.update.UpdateUserRequestBody;
@@ -29,7 +30,7 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public User retrieveUserById(UUID userId) {
+    public User retrieveUserById(int userId) {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
@@ -44,14 +45,14 @@ public class UserService {
         return userRepository.save(userToCreate);
     }
 
-    public User editUser(UUID userId, UpdateUserRequestBody userRequestBody) {
+    public User editUser(int userId, UpdateUserRequestBody userRequestBody) {
         User userToUpdate = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         updateUserFields(userToUpdate, userRequestBody);
 
         return userRepository.save(userToUpdate);
     }
 
-    public DeleteUserResponseBody removeUser(UUID userId) {
+    public DeleteUserResponseBody removeUser(int userId) {
         User userToDelete = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         User userToShow = new User();
@@ -71,6 +72,7 @@ public class UserService {
         userToCreate.setFirstName(userRequestBody.getFirstName());
         userToCreate.setLastName(userRequestBody.getLastName());
         userToCreate.setAvatarUrl(userRequestBody.getAvatarUrl());
+        userToCreate.setUserRole(UserRole.valueOf(userRequestBody.getUserRole()));
     }
 
     public void updateUserFields(User userToUpdate, UpdateUserRequestBody userRequestBody) {
@@ -92,6 +94,9 @@ public class UserService {
         if (userRequestBody.getAvatarUrl() != null) {
             userToUpdate.setAvatarUrl(userRequestBody.getAvatarUrl());
         }
+        if (userRequestBody.getUserRole() != null) {
+            userToUpdate.setUserRole(UserRole.valueOf(userRequestBody.getUserRole()));
+        }
     }
 
     public void setUserFieldsForDeletion(User userToCreate, User userRequestBody) {
@@ -101,5 +106,6 @@ public class UserService {
         userToCreate.setFirstName(userRequestBody.getFirstName());
         userToCreate.setLastName(userRequestBody.getLastName());
         userToCreate.setAvatarUrl(userRequestBody.getAvatarUrl());
+        userToCreate.setUserRole(userRequestBody.getUserRole());
     }
 }

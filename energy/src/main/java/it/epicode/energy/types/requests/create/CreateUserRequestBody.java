@@ -30,6 +30,6 @@ public class CreateUserRequestBody {
   @NotBlank(message = "avatar url cannot be empty")
   private String avatarUrl;
 
-  @Size(min = 1, max = 2, message = "user must have at least a role assigned")
-  private List<UserRole> userRoles;
+  @NotBlank(message = "user must have a role")
+  private String userRole;
 }

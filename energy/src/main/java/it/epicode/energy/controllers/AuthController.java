@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginUserResponseBody> login (@RequestBody @Validated LoginUserRequestBody loginUserRequestBody, BindingResult validation) throws BadRequestException {
+    public ResponseEntity<LoginUserResponseBody> login(@RequestBody @Validated LoginUserRequestBody loginUserRequestBody, BindingResult validation) throws BadRequestException {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors()
                     .stream()
