@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class InvoiceController {
   private InvoiceService invoiceService;
 
   @GetMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Page<Invoice>> getInvoices(@RequestParam(defaultValue = "0") int page,
                                                    @RequestParam(defaultValue = "10") int size,
                                                    @RequestParam(defaultValue = "id") String sortBy) {
@@ -29,11 +31,13 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Invoice> getInvoice(@PathVariable int id) {
     return new ResponseEntity<>(invoiceService.retrieveInvoiceById(id), HttpStatus.OK);
   }
 
   @PostMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Invoice> createInvoice(@RequestBody @Validated CreateInvoiceRequestBody invoiceRequestBody, BindingResult validation) throws BadRequestException {
     if(validation.hasErrors()){
       throw new BadRequestException(validation.getAllErrors()
@@ -45,6 +49,7 @@ public class InvoiceController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Invoice> updateInvoice(@RequestBody @Validated UpdateInvoiceRequestBody invoiceRequestBody,
                                                @PathVariable int id,
                                                BindingResult validation) throws BadRequestException {
@@ -58,6 +63,7 @@ public class InvoiceController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<DeleteInvoiceResponseBody> deleteInvoice(@PathVariable int id) {
     return new ResponseEntity<>(invoiceService.removeInvoice(id), HttpStatus.OK);
   }

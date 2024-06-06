@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class ProvinceController {
   private ProvinceService provinceService;
 
   @GetMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Page<Province>> getProvinces(@RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "10") int size,
                                                      @RequestParam(defaultValue = "id") String sortBy) {
@@ -33,11 +35,13 @@ public class ProvinceController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Province> getProvince(@PathVariable String id) {
     return new ResponseEntity<>(provinceService.retrieveProvinceById(id), HttpStatus.OK);
   }
 
   @PostMapping
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Province> createProvince(@RequestBody @Validated CreateProvinceRequestBody provinceRequestBody, BindingResult validation) throws BadRequestException {
     if(validation.hasErrors()){
       throw new BadRequestException(validation.getAllErrors()
@@ -49,6 +53,7 @@ public class ProvinceController {
   }
 
   @PatchMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Province> updateProvince(@RequestBody @Validated UpdateProvinceRequestBody provinceRequestBody,
                                                  @PathVariable String id,
                                                  BindingResult validation) throws BadRequestException {
@@ -62,11 +67,13 @@ public class ProvinceController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<DeleteProvinceResponseBody> deleteProvince(@PathVariable String id) {
     return new ResponseEntity<>(provinceService.removeProvince(id), HttpStatus.OK);
   }
 
   @PostMapping("/import")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<String> importProvinces(@RequestParam MultipartFile file) throws CsvValidationException, IOException {
       provinceService.importProvincesFromCSV(file);
       return new ResponseEntity<>("File imported successfully", HttpStatus.OK);

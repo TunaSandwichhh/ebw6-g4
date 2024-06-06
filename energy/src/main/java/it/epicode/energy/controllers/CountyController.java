@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class CountyController {
     private CountyService countyService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Page<County>> getCounties(@RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "10") int size,
                                                     @RequestParam(defaultValue = "id") String sortBy){
@@ -32,11 +34,13 @@ public class CountyController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<County> getCounty(@PathVariable int id){
         return new ResponseEntity<>(countyService.retrieveCountyById(id), HttpStatus.OK);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<County> createCounty(@RequestBody @Validated CreateCountyRequestBody countyRequestBody, BindingResult validation) throws BadRequestException {
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors()
@@ -48,6 +52,7 @@ public class CountyController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<County> updateCounty(@RequestBody @Validated UpdateCountyRequestBody countyRequestBody, @PathVariable int id, BindingResult validation) throws BadRequestException {
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors()
@@ -59,12 +64,14 @@ public class CountyController {
     }
 
     @PostMapping("/import")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<String> importCounties(@RequestParam("file") MultipartFile file) throws CsvValidationException, IOException {
             countyService.importCountiesFromCSV(file);
             return new ResponseEntity<>("File imported successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<DeleteCountyResponseBody> deleteCounty(@PathVariable int id){
         return new ResponseEntity<>(countyService.removeCounty(id), HttpStatus.OK);
     }
