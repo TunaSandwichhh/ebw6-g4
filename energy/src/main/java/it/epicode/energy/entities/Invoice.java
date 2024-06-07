@@ -14,7 +14,7 @@ public class Invoice {
 
   @Id
   @GeneratedValue
-  private int invoiceNumber;
+  private int id;
 
   private LocalDate date;
 
@@ -31,7 +31,6 @@ public class Invoice {
   @Override
   public String toString() {
     return "Invoice{" +
-            "invoiceNumber=" + invoiceNumber +
             ", date=" + date +
             ", amount=" + amount +
             ", invoiceState=" + invoiceState +

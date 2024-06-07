@@ -88,7 +88,6 @@ public class InvoiceService {
         invoiceToCreate.setCustomer(invoiceRequestBody.getCustomer());
         invoiceToCreate.setDate(invoiceRequestBody.getDate());
         invoiceToCreate.setInvoiceState(invoiceRequestBody.getInvoiceState());
-        invoiceToCreate.setInvoiceNumber(invoiceRequestBody.getInvoiceNumber());
     }
 
 
