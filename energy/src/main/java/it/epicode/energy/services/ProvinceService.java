@@ -30,8 +30,8 @@ public class ProvinceService {
         return provinceRepository.findAll(pageable);
     }
 
-    public Province retrieveProvinceById(String provinceName){
-        return provinceRepository.findById(provinceName).orElseThrow(()-> new RuntimeException("Province not found with name: " + provinceName));
+    public Province retrieveProvinceById(int provinceId){
+        return provinceRepository.findById(provinceId).orElseThrow(()-> new RuntimeException("Province not found with name: " + provinceId));
     }
 
     public Province addProvince(CreateProvinceRequestBody provinceRequestBody){
@@ -41,14 +41,14 @@ public class ProvinceService {
         return provinceRepository.save(provinceToCreate);
     }
 
-    public Province editProvince(String provinceName, UpdateProvinceRequestBody provinceRequestBody){
-        Province provinceToUpdate = provinceRepository.findById(provinceName).orElseThrow(()-> new RuntimeException("Province not found with name:" + provinceName));
+    public Province editProvince(int provinceId, UpdateProvinceRequestBody provinceRequestBody){
+        Province provinceToUpdate = provinceRepository.findById(provinceId).orElseThrow(()-> new RuntimeException("Province not found with name:" + provinceId));
         updateProvinceFields(provinceToUpdate, provinceRequestBody);
         return provinceRepository.save(provinceToUpdate);
     }
 
-    public DeleteProvinceResponseBody removeProvince(String provinceName) {
-        Province provinceToDelete = provinceRepository.findById(provinceName).orElseThrow(()-> new RuntimeException("Province not found with name:" + provinceName));
+    public DeleteProvinceResponseBody removeProvince(int provinceId) {
+        Province provinceToDelete = provinceRepository.findById(provinceId).orElseThrow(()-> new RuntimeException("Province not found with name:" + provinceId));
 
         Province provinceToShow = new Province();
         setProvinceFieldsForDeletion(provinceToShow, provinceToDelete);
@@ -60,6 +60,7 @@ public class ProvinceService {
         List<Province> provinces = new ArrayList<>();
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             String[] values;
+            csvReader.readNext();
             csvReader.readNext();
             while ((values = csvReader.readNext()) != null) {
 

@@ -11,6 +11,9 @@ import java.util.List;
 public class Province {
 
   @Id
+  @GeneratedValue
+  private int id;
+
   @Column(name = "province_name")
   private String provinceName;
 

@@ -10,17 +10,20 @@ import lombok.Data;
 public class County {
 
   @Id
+  @GeneratedValue
+  private int id;
+
   @Column(name = "county_number")
   private int countyNumber;
 
   @Column(name = "county_name")
   private String countyName;
 
-  @Column(name = "province_code")
-  private int provinceCode;
+  @Column(name = "province_name")
+  private String provinceName;
 
   @ManyToOne
-  @JoinColumn(name = "province_name")
+  @JoinColumn(name = "province_code")
   @JsonIgnore
   private Province province;
 
@@ -29,7 +32,7 @@ public class County {
     return "County{" +
             "countyNumber=" + countyNumber +
             ", countyName='" + countyName + '\'' +
-            ", provinceCode=" + provinceCode +
+            ", provinceCode=" + provinceName +
             ", province=" + province +
             '}';
   }

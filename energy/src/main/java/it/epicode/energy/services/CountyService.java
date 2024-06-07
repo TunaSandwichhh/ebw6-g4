@@ -44,7 +44,7 @@ public class CountyService {
     }
 
     public County addCounty(CreateCountyRequestBody countyRequestBody) {
-        Province provinceToFind = provinceRepository.findById(countyRequestBody.getProvinceName()).orElseThrow(() -> new RuntimeException("Province not found with id: " + countyRequestBody.getProvinceName()));
+        Province provinceToFind = provinceRepository.findById(countyRequestBody.getProvinceId()).orElseThrow(() -> new RuntimeException("Province not found with id: " + countyRequestBody.getProvinceId()));
 
         County countyToCreate = new County();
         countyToCreate.setProvince(provinceToFind);
@@ -54,8 +54,8 @@ public class CountyService {
 
     public County editCounty(Integer countyId, UpdateCountyRequestBody countyRequestBody) {
         County countyToUpdate = countyRepository.findById(countyId).orElseThrow(() -> new RuntimeException("County not found with id: " + countyId));
-       if(countyRequestBody.getProvinceName() != null ){
-           Province provinceToFind = provinceRepository.findById(countyRequestBody.getProvinceName()).orElseThrow(() -> new RuntimeException("Province not found with id: " + countyRequestBody.getProvinceName()));
+       if(countyRequestBody.getProvinceId() > 0 ){
+           Province provinceToFind = provinceRepository.findById(countyRequestBody.getProvinceId()).orElseThrow(() -> new RuntimeException("Province not found with id: " + countyRequestBody.getProvinceId()));
            countyToUpdate.setProvince(provinceToFind);
        }
         updateCountyFields(countyToUpdate, countyRequestBody);
@@ -75,17 +75,19 @@ public class CountyService {
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
             String[] values;
             csvReader.readNext();
+            csvReader.readNext();
             while ((values = csvReader.readNext()) != null) {
 
                 String[] actualValues = values[0].split(";");
 
                 County county = new County();
-                county.setProvinceCode(Integer.parseInt(actualValues[0]));
                 county.setCountyNumber(Integer.parseInt(actualValues[1]));
                 county.setCountyName(actualValues[2]);
 
-                Province province = provinceRepository.findById(actualValues[3])
+                Province province = provinceRepository.findById(2)
                         .orElseThrow(() -> new RuntimeException("Province not found"));
+
+                county.setProvinceName(actualValues[3]);
                 county.setProvince(province);
 
                 counties.add(county);
@@ -100,22 +102,16 @@ public class CountyService {
         if (countyRequestBody.getCountyName() != null) {
             countyToUpdate.setCountyName(countyRequestBody.getCountyName());
         }
-        if (countyRequestBody.getProvinceCode() >0) {
-            countyToUpdate.setProvinceCode(countyRequestBody.getProvinceCode());
-        }
 
     }
 
     private void setCountyFields(County countyToCreate, CreateCountyRequestBody countyRequestBody) {
         countyToCreate.setCountyName(countyRequestBody.getCountyName());
-        countyToCreate.setProvinceCode(countyRequestBody.getProvinceCode());
-
     }
 
     private void setCountyFieldsForDeletion(County countyToCreate, County countyRequestBody) {
         countyToCreate.setCountyNumber(countyRequestBody.getCountyNumber());
         countyToCreate.setCountyName(countyRequestBody.getCountyName());
-        countyToCreate.setProvinceCode(countyRequestBody.getProvinceCode());
         countyToCreate.setProvince(countyRequestBody.getProvince());
     }
 }

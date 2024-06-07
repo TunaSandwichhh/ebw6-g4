@@ -36,7 +36,7 @@ public class ProvinceController {
 
   @GetMapping("/{id}")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-  public ResponseEntity<Province> getProvince(@PathVariable String id) {
+  public ResponseEntity<Province> getProvince(@PathVariable int id) {
     return new ResponseEntity<>(provinceService.retrieveProvinceById(id), HttpStatus.OK);
   }
 
@@ -55,7 +55,7 @@ public class ProvinceController {
   @PatchMapping("/{id}")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<Province> updateProvince(@RequestBody @Validated UpdateProvinceRequestBody provinceRequestBody,
-                                                 @PathVariable String id,
+                                                 @PathVariable int id,
                                                  BindingResult validation) throws BadRequestException {
     if(validation.hasErrors()){
       throw new BadRequestException(validation.getAllErrors()
@@ -68,7 +68,7 @@ public class ProvinceController {
 
   @DeleteMapping("/{id}")
   @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-  public ResponseEntity<DeleteProvinceResponseBody> deleteProvince(@PathVariable String id) {
+  public ResponseEntity<DeleteProvinceResponseBody> deleteProvince(@PathVariable int id) {
     return new ResponseEntity<>(provinceService.removeProvince(id), HttpStatus.OK);
   }
 

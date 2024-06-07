@@ -9,8 +9,6 @@ public class UpdateCountyRequestBody {
 
   private String countyName;
 
-  private int provinceCode;
-
-  private String provinceName;
+  private int provinceId;
 
 }

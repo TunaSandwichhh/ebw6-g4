@@ -15,5 +15,5 @@ public class CreateCountyRequestBody {
 
   //identificativo
   @NotBlank(message = "province name cannot be empty")
-  private String provinceName;
+  private int provinceId;
 }
